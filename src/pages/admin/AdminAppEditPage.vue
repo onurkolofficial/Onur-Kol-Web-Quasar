@@ -125,23 +125,21 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMeta, useQuasar, LocalStorage } from 'quasar';
+import { reactive } from "vue";
+import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
+import { firebaseFirestore } from "boot/firebase";
 import {
   collection,
   onSnapshot,
   query,
-  orderBy,
   where,
   doc,
   updateDoc,
   deleteDoc,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
-import checkForAdminAccount from 'src/services/account/check-admin.js';
+import checkForAdminAccount from "src/services/account/check-admin.js";
 
 const app = reactive({
   id: null,
@@ -153,11 +151,11 @@ const app = reactive({
 });
 
 export default {
-  name: 'AdminAppEditPage',
+  name: "AdminAppEditPage",
 
   data() {
     return {
-      appCollection: collection(firebaseFirestore, 'appData'),
+      appCollection: collection(firebaseFirestore, "appData"),
       appId: this.$route.params.aid,
       appName: null,
       appVersion: null,
@@ -171,7 +169,7 @@ export default {
   methods: {
     loadAppData() {
       onSnapshot(
-        query(this.appCollection, where('id', '==', this.appId)),
+        query(this.appCollection, where("id", "==", this.appId)),
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.docId = doc.id;
@@ -193,20 +191,20 @@ export default {
     },
 
     updateApp() {
-      const docRef = doc(firebaseFirestore, 'appData/' + this.docId);
-      updateDoc(docRef, 'id', app.id);
-      updateDoc(docRef, 'name', app.name);
-      updateDoc(docRef, 'version', app.version);
-      updateDoc(docRef, 'categoryId', app.category);
-      updateDoc(docRef, 'downloadUrl', app.download);
-      updateDoc(docRef, 'sourceUrl', app.source);
-      this.redirectToName('AdminAppListPage');
+      const docRef = doc(firebaseFirestore, "appData/" + this.docId);
+      updateDoc(docRef, "id", app.id);
+      updateDoc(docRef, "name", app.name);
+      updateDoc(docRef, "version", app.version);
+      updateDoc(docRef, "categoryId", app.category);
+      updateDoc(docRef, "downloadUrl", app.download);
+      updateDoc(docRef, "sourceUrl", app.source);
+      this.redirectToName("AdminAppListPage");
     },
 
     deleteApp() {
-      const docRef = doc(firebaseFirestore, 'appData/' + this.docId);
+      const docRef = doc(firebaseFirestore, "appData/" + this.docId);
       deleteDoc(docRef).then(() => {
-        this.redirectToName('AdminAppListPage');
+        this.redirectToName("AdminAppListPage");
       });
     },
 
@@ -224,7 +222,7 @@ export default {
 
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - Admin - Edit',
+        title: "Onur Kol Web Page - Admin - Edit",
       };
     });
 

@@ -42,21 +42,19 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMeta, useQuasar, LocalStorage } from 'quasar';
+import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { firebaseFirestore } from "boot/firebase";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
-import checkForAdminAccount from 'src/services/account/check-admin.js';
+import checkForAdminAccount from "src/services/account/check-admin.js";
 
 export default {
-  name: 'AdminAppListPage',
+  name: "AdminAppListPage",
 
   data() {
     return {
-      appCollection: collection(firebaseFirestore, 'appData'),
+      appCollection: collection(firebaseFirestore, "appData"),
       appList: [],
     };
   },
@@ -64,7 +62,7 @@ export default {
   methods: {
     loadAppListData() {
       onSnapshot(
-        query(this.appCollection, orderBy('id', 'asc')),
+        query(this.appCollection, orderBy("id", "asc")),
         (snapshot) => {
           this.appList = [];
           snapshot.forEach((doc) => {
@@ -80,7 +78,7 @@ export default {
 
     redirectToEdit(id) {
       this.$router.push({
-        path: '/admin/apps/' + id + '/edit',
+        path: "/admin/apps/" + id + "/edit",
       });
     },
   },
@@ -90,7 +88,7 @@ export default {
 
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - Admin - Apps',
+        title: "Onur Kol Web Page - Admin - Apps",
       };
     });
   },

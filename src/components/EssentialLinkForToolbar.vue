@@ -26,6 +26,53 @@
         -->
     </router-link>
   </div>
+  <div v-else-if="isDropdown === true">
+    <q-chip square size="18px" clickable color="transparent" text-color="white">
+      <q-avatar size="lg" :icon="icon" />
+      {{ title }}
+      <q-menu fit>
+        <q-list style="min-width: 100px">
+          <q-item
+            tag="a"
+            target="_blank"
+            href="https://github.com/onurkolofficial"
+            clickable
+            v-close-popup
+          >
+            <q-item-section>Github</q-item-section>
+          </q-item>
+          <q-item
+            tag="a"
+            target="_blank"
+            href="https://twitter.com/onurkolofficial"
+            clickable
+            v-close-popup
+          >
+            <q-item-section>Twitter</q-item-section>
+          </q-item>
+          <q-item
+            tag="a"
+            target="_blank"
+            href="https://instagram.com/onurkolofficial"
+            clickable
+            v-close-popup
+          >
+            <q-item-section>Instagram</q-item-section>
+          </q-item>
+          <q-item
+            tag="a"
+            target="_blank"
+            href="https://facebook.com/onurkolofficial"
+            clickable
+            v-close-popup
+          >
+            <q-item-section>Facebook</q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
+    </q-chip>
+  </div>
+  <div v-else-if="mobileOnly === true"></div>
   <div v-else>
     <a :href="link" :target="target">
       <q-chip
@@ -46,10 +93,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'EssentialLinkForToolbar',
+  name: "EssentialLinkForToolbar",
   props: {
     title: {
       type: String,
@@ -58,25 +105,35 @@ export default defineComponent({
 
     caption: {
       type: String,
-      default: '',
+      default: "",
     },
 
     link: {
       type: String,
-      default: '#',
+      default: "#",
     },
 
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
 
     target: {
       type: String,
-      default: '_self',
+      default: "_self",
     },
 
     isRouter: {
+      type: Boolean,
+      default: false,
+    },
+
+    mobileOnly: {
+      type: Boolean,
+      default: false,
+    },
+
+    isDropdown: {
       type: Boolean,
       default: false,
     },

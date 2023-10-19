@@ -1,15 +1,7 @@
 <template>
   <div v-if="isRouter === true">
     <router-link
-      class="
-        q-item q-item-type
-        row
-        no-wrap
-        q-item--clickable
-        q-link
-        cursor-pointer
-        q-hoverable
-      "
+      class="q-item q-item-type row no-wrap q-item--clickable q-link cursor-pointer q-hoverable"
       tabindex="0"
       role="listitem"
       :to="link"
@@ -25,6 +17,8 @@
       </q-item-section>
     </router-link>
   </div>
+  <!-- Dropdowns not showing mobile drawer.-->
+  <div v-else-if="isDropdown === true"></div>
   <div v-else>
     <q-item tag="a" :target="target" :href="link">
       <q-item-section v-if="icon" avatar>
@@ -40,10 +34,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'EssentialLinkForDrawer',
+  name: "EssentialLinkForDrawer",
   props: {
     title: {
       type: String,
@@ -52,25 +46,30 @@ export default defineComponent({
 
     caption: {
       type: String,
-      default: '',
+      default: "",
     },
 
     link: {
       type: String,
-      default: '#',
+      default: "#",
     },
 
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
 
     target: {
       type: String,
-      default: '_self',
+      default: "_self",
     },
 
     isRouter: {
+      type: Boolean,
+      default: false,
+    },
+
+    isDropdown: {
       type: Boolean,
       default: false,
     },

@@ -19,31 +19,15 @@
         </q-timeline-entry>
 
         <q-timeline-entry
+          v-for="item in newsList"
+          :key="item.date"
           class="text-white"
-          title="New Release!"
-          subtitle="October 16, 2023"
+          :title="item.title"
+          :subtitle="item.date"
           icon="done"
         >
           <div>
-            The website software has been completely renewed. You can explore
-            our site that offers new and advanced features. Our new site uses
-            the Quasar framework.
-          </div>
-        </q-timeline-entry>
-
-        <q-timeline-entry
-          class="text-white"
-          title="New Domain!"
-          subtitle="October 01, 2023"
-          icon="done"
-        >
-          <div>
-            My new internet address was changed from
-            <span style="color: #bdbdbd"
-              >https://onurkolofficial.epizy.com</span
-            >
-            to
-            <span style="color: #6200ee"><b>https://onurkol.web.app</b></span> .
+            {{ item.text }}
           </div>
         </q-timeline-entry>
       </q-timeline>
@@ -52,12 +36,62 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { firebaseApp } from "boot/firebase";
 import { useMeta } from "quasar";
+
+import { firebaseFirestore } from "boot/firebase";
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
 export default {
   name: "IndexPage",
+
+  data() {
+    return {
+      newsCollection: collection(firebaseFirestore, "news"),
+      newsList: [],
+    };
+  },
+
+  methods: {
+    loadNewsListData() {
+      onSnapshot(
+        query(this.newsCollection, orderBy("date", "desc"), limit(4)),
+        (snapshot) => {
+          this.newsList = [];
+          snapshot.forEach((doc) => {
+            const convertData = doc.data();
+
+            // Convert Date
+            const getDate = new Date(convertData.date.seconds * 1000);
+            let year = getDate.getFullYear();
+            let month = "";
+            let cMonth = getDate.getMonth() + 1;
+            let day = getDate.getDate();
+            let hours = "";
+            let cHours = getDate.getHours();
+            let minutes = "";
+            let cMinutes = getDate.getMinutes();
+            if (cMonth <= 9) month = "0" + cMonth;
+            else month = cMonth;
+            if (cHours <= 9) hours = "0" + cHours;
+            else hours = cHours;
+            if (cMinutes <= 9) minutes = "0" + cMinutes;
+            else minutes = cMinutes;
+
+            convertData.date =
+              day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
+
+            this.newsList.push(convertData);
+          });
+        }
+      );
+    },
+  },
 
   setup() {
     useMeta(() => {
@@ -65,6 +99,10 @@ export default {
         title: "Onur Kol Web Page",
       };
     });
+  },
+
+  mounted() {
+    this.loadNewsListData();
   },
 };
 </script>

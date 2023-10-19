@@ -94,81 +94,88 @@
 </template>
 
 <script>
-import { onBeforeUnmount, defineComponent, ref } from 'vue';
-import { useQuasar, LocalStorage } from 'quasar';
-import EssentialLinkForDrawer from 'components/EssentialLinkForDrawer.vue';
-import EssentialLinkForToolbar from 'components/EssentialLinkForToolbar.vue';
+import { onBeforeUnmount, defineComponent, ref } from "vue";
+import { useQuasar, LocalStorage } from "quasar";
+import EssentialLinkForDrawer from "components/EssentialLinkForDrawer.vue";
+import EssentialLinkForToolbar from "components/EssentialLinkForToolbar.vue";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { firebaseApp, firebaseFirestore } from "boot/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
-import logoutService from 'src/services/account/firebase-logout';
+import logoutService from "src/services/account/firebase-logout";
 
 const leftDrawerOpen = ref(false);
-const isUserSignedIn = LocalStorage.has('user');
-const userInfo = LocalStorage.getItem('user');
+const isUserSignedIn = LocalStorage.has("user");
+const userInfo = LocalStorage.getItem("user");
 
 const linksList = [
   {
-    title: 'Home',
-    caption: 'page.home',
-    icon: 'home',
-    link: '/',
+    title: "Home",
+    caption: "page.home",
+    icon: "home",
+    link: "/",
     isRouter: true,
   },
   {
-    title: 'Apps',
-    caption: 'page.apps',
-    icon: 'double_arrow',
-    link: '/apps',
+    title: "Apps",
+    caption: "page.apps",
+    icon: "double_arrow",
+    link: "/apps",
     isRouter: true,
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-    isRouter: false,
+    title: "Social",
+    caption: "list.social",
+    icon: "double_arrow",
+    isDropdown: true,
+  },
+
+  {
+    title: "Github",
+    caption: "github.com/quasarframework",
+    icon: "code",
+    link: "https://github.com/quasarframework",
+    mobileOnly: true,
   },
   {
-    title: 'Twitter',
-    caption: '@onurkolofficial',
-    icon: 'link',
-    link: 'https://twitter.com/onurkolofficial',
-    isRouter: false,
+    title: "Twitter",
+    caption: "@onurkolofficial",
+    icon: "link",
+    link: "https://twitter.com/onurkolofficial",
+    mobileOnly: true,
   },
   {
-    title: 'Facebook',
-    caption: '@onurkolofficial',
-    icon: 'link',
-    link: 'https://facebook.com/onurkolofficial',
-    isRouter: false,
+    title: "Facebook",
+    caption: "@onurkolofficial",
+    icon: "link",
+    link: "https://facebook.com/onurkolofficial",
+    mobileOnly: true,
   },
   {
-    title: 'Instagram',
-    caption: '@onurkolofficial',
-    icon: 'link',
-    link: 'https://instagram.com/onurkolofficial',
-    isRouter: false,
+    title: "Instagram",
+    caption: "@onurkolofficial",
+    icon: "link",
+    link: "https://instagram.com/onurkolofficial",
+    mobileOnly: true,
   },
 ];
 
 // Login Button
-if (!LocalStorage.has('user')) {
+if (!LocalStorage.has("user")) {
   linksList[linksList.length] = {
-    title: 'Login',
-    caption: 'Login your account.',
-    icon: 'login',
-    link: '/login',
+    title: "Login",
+    caption: "Login your account.",
+    icon: "login",
+    link: "/login",
     isRouter: true,
   };
 }
 
 // Admin Button
-if (LocalStorage.has('user')) {
+if (LocalStorage.has("user")) {
   const userMail = userInfo.email;
   // Get Firestore Collection
-  const usersCollection = collection(firebaseFirestore, 'webAdmin');
+  const usersCollection = collection(firebaseFirestore, "webAdmin");
   getDocs(usersCollection)
     .then((querySnapshot) => {
       for (var i in querySnapshot.docs) {
@@ -177,10 +184,10 @@ if (LocalStorage.has('user')) {
         const adminMails = doc.data().email;
         if (adminMails == userMail) {
           linksList[linksList.length] = {
-            title: 'Admin',
-            caption: 'Admin Panel',
-            icon: 'admin_panel_settings',
-            link: '/admin',
+            title: "Admin",
+            caption: "Admin Panel",
+            icon: "admin_panel_settings",
+            link: "/admin",
             isRouter: false,
           };
           break;
@@ -207,20 +214,20 @@ const showLoadingScreen = () => {
 };
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
   components: {
     EssentialLinkForDrawer,
     EssentialLinkForToolbar,
   },
   computed: {
     userDisplayInfo() {
-      return userInfo == null ? 'User' : userInfo.displayName;
+      return userInfo == null ? "User" : userInfo.displayName;
     },
   },
   setup() {
     const logout = () => {
       logoutService().then(() => {
-        window.location.href = '/';
+        window.location.href = "/";
         //router.push('/login');
       });
     };
@@ -235,18 +242,18 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       toolbarScrollbarThumbStyle: {
-        right: '4px',
-        borderRadius: '5px',
-        backgroundColor: '#ffffff',
-        width: '5px',
-        height: '6px',
+        right: "4px",
+        borderRadius: "5px",
+        backgroundColor: "#ffffff",
+        width: "5px",
+        height: "6px",
         opacity: 0.78,
       },
       toolbarScrollbarStyle: {
-        right: '2px',
-        borderRadius: '9px',
-        backgroundColor: '#027be3',
-        height: '6px',
+        right: "2px",
+        borderRadius: "9px",
+        backgroundColor: "#027be3",
+        height: "6px",
         opacity: 0.4,
       },
     };

@@ -63,41 +63,48 @@
   </q-layout>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
-import { useQuasar, LocalStorage } from 'quasar';
-import EssentialLinkForDrawer from 'components/EssentialLinkForDrawer.vue';
-import EssentialLinkForToolbar from 'components/EssentialLinkForToolbar.vue';
+import { defineComponent, ref } from "vue";
+import { useQuasar, LocalStorage } from "quasar";
+import EssentialLinkForDrawer from "components/EssentialLinkForDrawer.vue";
+import EssentialLinkForToolbar from "components/EssentialLinkForToolbar.vue";
 
 const leftDrawerOpen = ref(false);
-const userInfo = LocalStorage.getItem('user');
+const userInfo = LocalStorage.getItem("user");
 
 const linksList = [
   {
-    title: 'Home Admin',
-    caption: 'page.admin.home',
-    icon: 'home',
-    link: '/admin',
+    title: "Home Admin",
+    caption: "page.admin.home",
+    icon: "home",
+    link: "/admin",
     isRouter: true,
   },
   {
-    title: 'Home',
-    caption: 'page.home',
-    icon: 'double_arrow',
-    link: '/',
+    title: "Home",
+    caption: "page.home",
+    icon: "double_arrow",
+    link: "/",
     isRouter: true,
   },
   {
-    title: 'Category',
-    caption: 'page.category',
-    icon: 'code',
-    link: '/admin/category',
+    title: "Category",
+    caption: "page.category",
+    icon: "code",
+    link: "/admin/category",
     isRouter: true,
   },
   {
-    title: 'Apps',
-    caption: 'page.apps',
-    icon: 'code',
-    link: '/admin/apps',
+    title: "Apps",
+    caption: "page.apps",
+    icon: "code",
+    link: "/admin/apps",
+    isRouter: true,
+  },
+  {
+    title: "News",
+    caption: "page.news",
+    icon: "list",
+    link: "/admin/news",
     isRouter: true,
   },
 ];
@@ -116,14 +123,14 @@ const showLoadingScreen = () => {
 };
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
   components: {
     EssentialLinkForDrawer,
     EssentialLinkForToolbar,
   },
   computed: {
     userDisplayInfo() {
-      return userInfo == null ? 'User' : userInfo.displayName;
+      return userInfo == null ? "User" : userInfo.displayName;
     },
   },
   setup() {
@@ -135,18 +142,18 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       toolbarScrollbarThumbStyle: {
-        right: '4px',
-        borderRadius: '5px',
-        backgroundColor: '#ffffff',
-        width: '5px',
-        height: '6px',
+        right: "4px",
+        borderRadius: "5px",
+        backgroundColor: "#ffffff",
+        width: "5px",
+        height: "6px",
         opacity: 0.78,
       },
       toolbarScrollbarStyle: {
-        right: '2px',
-        borderRadius: '9px',
-        backgroundColor: '#027be3',
-        height: '6px',
+        right: "2px",
+        borderRadius: "9px",
+        backgroundColor: "#027be3",
+        height: "6px",
         opacity: 0.4,
       },
     };

@@ -33,21 +33,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMeta, LocalStorage } from 'quasar';
+import { ref } from "vue";
+import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { firebaseFirestore } from "boot/firebase";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 let categoryId = ref(null);
 
 export default {
-  name: 'AppCategoryPage',
+  name: "AppCategoryPage",
 
   data() {
     return {
-      categoryCollection: collection(firebaseFirestore, 'appCategory'),
+      categoryCollection: collection(firebaseFirestore, "appCategory"),
       categoryList: [],
     };
   },
@@ -55,7 +54,7 @@ export default {
   methods: {
     loadCategoryListData() {
       onSnapshot(
-        query(this.categoryCollection, orderBy('id', 'asc')),
+        query(this.categoryCollection, orderBy("id", "asc")),
         (snapshot) => {
           this.categoryList = [];
           snapshot.forEach((doc) => {
@@ -67,10 +66,10 @@ export default {
 
     redirectAppList(id) {
       this.$router.push({
-        path: '/apps/' + id,
+        path: "/apps/" + id,
       });
       /*
-      // Alternative: Using history state. 
+      // Alternative: Using history state.
       // For Details: 'AppListPage.vue' - data()
       // and check routes.js
       this.$router.push({
@@ -84,7 +83,7 @@ export default {
   setup() {
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - Category',
+        title: "Onur Kol Web Page - Category",
       };
     });
   },

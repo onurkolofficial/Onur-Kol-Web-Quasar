@@ -2,18 +2,14 @@
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs>
       <q-breadcrumbs-el label="Admin" icon="home" to="/admin" />
-      <q-breadcrumbs-el
-        label="Category"
-        icon="double_arrow"
-        to="/admin/category"
-      />
+      <q-breadcrumbs-el label="News" icon="double_arrow" to="/admin/news" />
       <q-breadcrumbs-el label="Edit" icon="edit" />
     </q-breadcrumbs>
   </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Edit Category</q-toolbar-title>
+      <q-toolbar-title>Edit News</q-toolbar-title>
     </q-toolbar>
 
     <q-card class="q-ma-xl">
@@ -27,10 +23,10 @@
                 class="text-h4 text-uppercase text-white fredoka"
                 style="min-width: 220px"
               >
-                {{ categoryName }}
+                {{ newsTitle }}
               </div>
               <div class="text-white q-my-sm text-subtitle1">
-                {{ categoryId }}
+                {{ newsId }}
               </div>
             </div>
           </div>
@@ -49,9 +45,9 @@
                   <q-card-section>
                     <div class="row items-center no-wrap">
                       <div class="col">
-                        <div class="text-h6 text-primary">Edit Category</div>
+                        <div class="text-h6 text-primary">Edit News</div>
                         <div class="text-subtitle2 text-primary">
-                          {{ categoryId }}
+                          {{ newsId }}
                         </div>
                       </div>
 
@@ -62,9 +58,9 @@
                               <q-item
                                 class="text-red"
                                 clickable
-                                @click="deleteCategory()"
+                                @click="deleteNews()"
                               >
-                                <q-item-section>Delete Category</q-item-section>
+                                <q-item-section>Delete News</q-item-section>
                               </q-item>
                             </q-list>
                           </q-menu>
@@ -75,18 +71,19 @@
 
                   <q-card-section>
                     <q-form class="q-gutter-md">
-                      <q-input v-model="category.name" label="Category Name" />
-                      <q-input v-model="category.id" label="Category Id" />
+                      <q-input v-model="news.id" label="News Id" />
+                      <q-input v-model="news.title" label="News Title" />
+                      <q-input v-model="news.text" label="News Text" />
                     </q-form>
                   </q-card-section>
 
                   <q-separator />
 
                   <q-card-actions>
-                    <q-btn @click="updateCategory()" flat color="primary"
+                    <q-btn @click="updateNews()" flat color="primary"
                       >Save Settings</q-btn
                     >
-                    <q-btn @click="redirectToName('AdminCategoryListPage')" flat
+                    <q-btn @click="redirectToName('AdminNewsListPage')" flat
                       >Cancel</q-btn
                     >
                   </q-card-actions>
@@ -117,50 +114,57 @@ import {
 
 import checkForAdminAccount from "src/services/account/check-admin.js";
 
-const category = reactive({
+const news = reactive({
   id: null,
-  name: null,
+  title: null,
+  text: null,
 });
 
 export default {
-  name: "AdminCategoryEditPage",
+  name: "AdminNewsEditPage",
 
   data() {
     return {
-      categoryCollection: collection(firebaseFirestore, "appCategory"),
-      categoryId: this.$route.params.cid,
-      categoryName: null,
+      newsCollection: collection(firebaseFirestore, "news"),
+      newsId: this.$route.params.nid,
+      newsTitle: null,
+      newsText: null,
       docId: null,
     };
   },
 
   methods: {
-    getCategoryData() {
+    loadNewsData() {
       onSnapshot(
-        query(this.categoryCollection, where("id", "==", this.categoryId)),
+        query(this.newsCollection, where("id", "==", this.newsId)),
         (snapshot) => {
           snapshot.forEach((doc) => {
+            console.log(doc.data());
             this.docId = doc.id;
-            this.categoryName = doc.data().name;
+            this.newsId = doc.data().id;
+            this.newsTitle = doc.data().title;
+            this.newsText = doc.data().text;
           });
 
-          category.id = this.categoryId;
-          category.name = this.categoryName;
+          news.id = this.newsId;
+          news.title = this.newsTitle;
+          news.text = this.newsText;
         }
       );
     },
 
-    updateCategory() {
-      const docRef = doc(firebaseFirestore, "appCategory/" + this.docId);
-      updateDoc(docRef, "id", category.id);
-      updateDoc(docRef, "name", category.name);
-      this.redirectToName("AdminCategoryListPage");
+    updateNews() {
+      const docRef = doc(firebaseFirestore, "news/" + this.docId);
+      updateDoc(docRef, "id", news.id);
+      updateDoc(docRef, "title", news.title);
+      updateDoc(docRef, "text", news.text);
+      this.redirectToName("AdminNewsListPage");
     },
 
-    deleteCategory() {
-      const docRef = doc(firebaseFirestore, "appCategory/" + this.docId);
+    deleteNews() {
+      const docRef = doc(firebaseFirestore, "news/" + this.docId);
       deleteDoc(docRef).then(() => {
-        this.redirectToName("AdminCategoryListPage");
+        this.redirectToName("AdminNewsListPage");
       });
     },
 
@@ -182,11 +186,11 @@ export default {
       };
     });
 
-    return { category };
+    return { news };
   },
 
   mounted() {
-    this.getCategoryData();
+    this.loadNewsData();
   },
 };
 </script>

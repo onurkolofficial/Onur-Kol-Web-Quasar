@@ -18,7 +18,7 @@
       <q-toolbar-title>Application Detail</q-toolbar-title>
     </q-toolbar>
 
-    <q-card class="q-ma-xl">
+    <q-card v-if="appName != null" class="q-ma-xl">
       <div class="row">
         <div class="col-0 col-sm-5 bg-primary rounded-left-borders xs-hide">
           <div
@@ -122,29 +122,66 @@
         </div>
       </div>
     </q-card>
+
+    <q-card v-if="appName == null" class="q-ma-xl">
+      <div class="row full-width bg-primary">
+        <div class="row q-pa-sm-sm q-pa-md">
+          <div
+            class="row full-width q-px-xl q-pb-xl full-height flex flex-center"
+          >
+            <div class="">
+              <div
+                class="text-h3 text-uppercase text-white fredoka"
+                style="min-width: 220px"
+              >
+                Application Not Found!
+              </div>
+              <div
+                class="text-white q-my-sm text-subtitle1"
+                style="margin-top: 20px"
+              >
+                <div class="text-h3" style="opacity: 0.8">
+                  Oops. Nothing here...
+                </div>
+
+                <q-btn
+                  class="q-mt-xl"
+                  color="white"
+                  text-color="blue"
+                  unelevated
+                  to="/"
+                  label="Go Home"
+                  no-caps
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </q-card>
   </q-page>
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useMeta, copyToClipboard } from 'quasar';
+import { ref } from "vue";
+import { useMeta, copyToClipboard } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
+import { firebaseApp, firebaseFirestore } from "boot/firebase";
 import {
   collection,
   onSnapshot,
   query,
   orderBy,
   where,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
 export default {
-  name: 'AppDetailPage',
+  name: "AppDetailPage",
 
   data() {
     return {
-      categoryCollection: collection(firebaseFirestore, 'appCategory'),
-      appCollection: collection(firebaseFirestore, 'appData'),
+      categoryCollection: collection(firebaseFirestore, "appCategory"),
+      appCollection: collection(firebaseFirestore, "appData"),
       categoryId: this.$route.params.cid,
       categoryName: null,
       appId: this.$route.params.aid,
@@ -160,7 +197,7 @@ export default {
   methods: {
     loadAppData() {
       onSnapshot(
-        query(this.appCollection, where('id', '==', this.appId)),
+        query(this.appCollection, where("id", "==", this.appId)),
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.appName = doc.data().name;
@@ -169,9 +206,9 @@ export default {
             this.appSource = doc.data().sourceUrl;
           });
 
-          if (this.appDownload == '') this.isDownloadable = false;
+          if (this.appDownload == "") this.isDownloadable = false;
           else this.isDownloadable = true;
-          if (this.appSource == '') this.isSourceable = false;
+          if (this.appSource == "") this.isSourceable = false;
           else this.isSourceable = true;
         }
       );
@@ -179,7 +216,7 @@ export default {
 
     getCategoryData() {
       onSnapshot(
-        query(this.categoryCollection, where('id', '==', this.categoryId)),
+        query(this.categoryCollection, where("id", "==", this.categoryId)),
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.categoryName = doc.data().name;
@@ -199,7 +236,7 @@ export default {
     },
 
     copyLink(url) {
-      if (url == 'this') copyToClipboard(window.location.href);
+      if (url == "this") copyToClipboard(window.location.href);
       else copyToClipboard(url);
     },
   },
@@ -207,7 +244,7 @@ export default {
   setup() {
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - App Detail',
+        title: "Onur Kol Web Page - App Detail",
       };
     });
   },

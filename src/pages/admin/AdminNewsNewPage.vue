@@ -2,18 +2,14 @@
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs>
       <q-breadcrumbs-el label="Admin" icon="home" to="/admin" />
-      <q-breadcrumbs-el
-        label="Category"
-        icon="double_arrow"
-        to="/admin/category"
-      />
+      <q-breadcrumbs-el label="News" icon="double_arrow" to="/admin/news" />
       <q-breadcrumbs-el label="New" icon="add" />
     </q-breadcrumbs>
   </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>New Category</q-toolbar-title>
+      <q-toolbar-title>New News</q-toolbar-title>
     </q-toolbar>
 
     <q-card class="q-ma-xl">
@@ -27,11 +23,9 @@
                 class="text-h4 text-uppercase text-white fredoka"
                 style="min-width: 220px"
               >
-                New Category
+                New News
               </div>
-              <div class="text-white q-my-sm text-subtitle1">
-                Add categories for apps.
-              </div>
+              <div class="text-white q-my-sm text-subtitle1">Add new news.</div>
             </div>
           </div>
         </div>
@@ -49,33 +43,26 @@
                   <q-card-section>
                     <div class="row items-center no-wrap">
                       <div class="col">
-                        <div class="text-h6 text-primary">New Category</div>
+                        <div class="text-h6 text-primary">New News</div>
                       </div>
                     </div>
                   </q-card-section>
 
                   <q-card-section>
                     <q-form class="q-gutter-md">
-                      <q-input
-                        v-model="category.name"
-                        label="Category Name"
-                        name="catName"
-                      />
-                      <q-input
-                        v-model="category.id"
-                        label="Category Id"
-                        name="catId"
-                      />
+                      <q-input v-model="news.id" label="News Id" />
+                      <q-input v-model="news.title" label="News Title" />
+                      <q-input v-model="news.text" label="News Text" />
                     </q-form>
                   </q-card-section>
 
                   <q-separator />
 
                   <q-card-actions>
-                    <q-btn @click="newCategory()" flat color="primary"
-                      >Add Category</q-btn
+                    <q-btn @click="newNews()" flat color="primary"
+                      >Add News</q-btn
                     >
-                    <q-btn @click="redirectToName('AdminCategoryListPage')" flat
+                    <q-btn @click="redirectToName('AdminNewsListPage')" flat
                       >Cancel</q-btn
                     >
                   </q-card-actions>
@@ -94,26 +81,29 @@ import { reactive } from "vue";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import checkForAdminAccount from "src/services/account/check-admin.js";
 
-const category = reactive({
+const news = reactive({
   id: null,
-  name: null,
+  title: null,
+  text: null,
 });
 
 export default {
-  name: "AdminCategoryNewPage",
+  name: "AdminNewsNewPage",
 
   methods: {
-    newCategory() {
+    newNews() {
       let newDocId = this.randomString(20);
-      setDoc(doc(firebaseFirestore, "appCategory", newDocId), {
-        id: category.id,
-        name: category.name,
+      setDoc(doc(firebaseFirestore, "news", newDocId), {
+        date: serverTimestamp(),
+        id: news.id,
+        title: news.title,
+        text: news.text,
       }).then(() => {
-        this.redirectToName("AdminCategoryListPage");
+        this.redirectToName("AdminNewsListPage");
       });
     },
 
@@ -146,7 +136,7 @@ export default {
       };
     });
 
-    return { category };
+    return { news };
   },
 };
 </script>

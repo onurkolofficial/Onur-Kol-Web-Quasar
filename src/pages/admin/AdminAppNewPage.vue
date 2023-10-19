@@ -106,21 +106,13 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { useMeta, useQuasar, LocalStorage } from 'quasar';
+import { reactive } from "vue";
+import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
-import {
-  collection,
-  onSnapshot,
-  query,
-  orderBy,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+import { firebaseFirestore } from "boot/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
-import checkForAdminAccount from 'src/services/account/check-admin.js';
+import checkForAdminAccount from "src/services/account/check-admin.js";
 
 const app = reactive({
   id: null,
@@ -132,12 +124,12 @@ const app = reactive({
 });
 
 export default {
-  name: 'AdminAppNewPage',
+  name: "AdminAppNewPage",
 
   methods: {
     newApp() {
       let newDocId = this.randomString(20);
-      setDoc(doc(firebaseFirestore, 'appData', newDocId), {
+      setDoc(doc(firebaseFirestore, "appData", newDocId), {
         id: app.id,
         name: app.name,
         version: app.version,
@@ -145,7 +137,7 @@ export default {
         downloadUrl: app.download,
         sourceUrl: app.source,
       }).then(() => {
-        this.redirectToName('AdminAppListPage');
+        this.redirectToName("AdminAppListPage");
       });
     },
 
@@ -158,9 +150,9 @@ export default {
     },
 
     randomString(length) {
-      let text = ' ';
+      let text = " ";
       let chars =
-        '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       for (let i = 0; i < length; i++) {
         text += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -174,7 +166,7 @@ export default {
 
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - Admin - New',
+        title: "Onur Kol Web Page - Admin - New",
       };
     });
 

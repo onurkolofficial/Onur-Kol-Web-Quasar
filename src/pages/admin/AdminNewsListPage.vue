@@ -2,34 +2,34 @@
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs>
       <q-breadcrumbs-el label="Admin" icon="home" to="/admin" />
-      <q-breadcrumbs-el label="Category" icon="double_arrow" />
+      <q-breadcrumbs-el label="News" icon="double_arrow" />
     </q-breadcrumbs>
   </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Category List</q-toolbar-title>
+      <q-toolbar-title>News List</q-toolbar-title>
     </q-toolbar>
     <q-toolbar class="text-primary">
       <q-toolbar-title>Action</q-toolbar-title>
       <q-btn
         icon="add"
         color="primary"
-        label="New Category"
-        @click="redirectToName('AdminCategoryNewPage')"
+        label="New News"
+        @click="redirectToName('AdminNewsNewPage')"
       />
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
-      <div v-for="item in categoryList" :key="item.id">
+      <div v-for="item in newsList" :key="item.date">
         <q-item clickable v-ripple @click="redirectToEdit(item.id)">
           <q-item-section avatar top>
             <q-avatar icon="folder" color="primary" text-color="white" />
           </q-item-section>
 
           <q-item-section>
-            <q-item-label lines="1">{{ item.name }}</q-item-label>
-            <q-item-label caption>February 22nd, 2019</q-item-label>
+            <q-item-label lines="1">{{ item.title }}</q-item-label>
+            <q-item-label caption>{{ item.date }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -50,34 +50,45 @@ import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import checkForAdminAccount from "src/services/account/check-admin.js";
 
 export default {
-  name: "AdminCategoryListPage",
+  name: "AdminNewsListPage",
 
   data() {
     return {
-      categoryCollection: collection(firebaseFirestore, "appCategory"),
-      categoryList: [],
+      newsCollection: collection(firebaseFirestore, "news"),
+      newsList: [],
     };
   },
 
   methods: {
-    loadCategoryListData() {
+    loadNewsListData() {
       onSnapshot(
-        query(this.categoryCollection, orderBy("id", "asc")),
+        query(this.newsCollection, orderBy("date", "desc")),
         (snapshot) => {
-          this.categoryList = [];
+          this.newsList = [];
           snapshot.forEach((doc) => {
-            this.categoryList.push(doc.data());
-          });
-        }
-      );
-    },
+            const convertData = doc.data();
 
-    getCategoryData() {
-      onSnapshot(
-        query(this.categoryCollection, where("id", "==", this.categoryId)),
-        (snapshot) => {
-          snapshot.forEach((doc) => {
-            this.categoryName = doc.data().name;
+            // Convert Date
+            const getDate = new Date(convertData.date.seconds * 1000);
+            let year = getDate.getFullYear();
+            let month = "";
+            let cMonth = getDate.getMonth() + 1;
+            let day = getDate.getDate();
+            let hours = "";
+            let cHours = getDate.getHours();
+            let minutes = "";
+            let cMinutes = getDate.getMinutes();
+            if (cMonth <= 9) month = "0" + cMonth;
+            else month = cMonth;
+            if (cHours <= 9) hours = "0" + cHours;
+            else hours = cHours;
+            if (cMinutes <= 9) minutes = "0" + cMinutes;
+            else minutes = cMinutes;
+
+            convertData.date =
+              day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
+
+            this.newsList.push(convertData);
           });
         }
       );
@@ -89,7 +100,7 @@ export default {
 
     redirectToEdit(id) {
       this.$router.push({
-        path: "/admin/category/" + id + "/edit",
+        path: "/admin/news/" + id + "/edit",
       });
     },
   },
@@ -99,13 +110,13 @@ export default {
 
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page - Admin - Category",
+        title: "Onur Kol Web Page - Admin - News",
       };
     });
   },
 
   mounted() {
-    this.loadCategoryListData();
+    this.loadNewsListData();
   },
 };
 </script>
