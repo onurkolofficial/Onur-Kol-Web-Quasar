@@ -29,7 +29,13 @@
 
           <q-item-section>
             <q-item-label lines="1">{{ item.name }}</q-item-label>
-            <q-item-label caption>February 22nd, 2019</q-item-label>
+            <q-item-label caption>{{
+              item.type == "app"
+                ? "Application"
+                : item.type == "game"
+                ? "Game"
+                : item.type
+            }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>

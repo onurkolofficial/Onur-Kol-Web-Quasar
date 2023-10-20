@@ -110,7 +110,7 @@ import { reactive } from "vue";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import checkForAdminAccount from "src/services/account/check-admin.js";
 
@@ -130,6 +130,7 @@ export default {
     newApp() {
       let newDocId = this.randomString(20);
       setDoc(doc(firebaseFirestore, "appData", newDocId), {
+        date: serverTimestamp(),
         id: app.id,
         name: app.name,
         version: app.version,

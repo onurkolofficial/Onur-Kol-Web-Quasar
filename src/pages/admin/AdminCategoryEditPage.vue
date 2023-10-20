@@ -77,6 +77,7 @@
                     <q-form class="q-gutter-md">
                       <q-input v-model="category.name" label="Category Name" />
                       <q-input v-model="category.id" label="Category Id" />
+                      <q-input v-model="category.type" label="Category Type" />
                     </q-form>
                   </q-card-section>
 
@@ -120,6 +121,7 @@ import checkForAdminAccount from "src/services/account/check-admin.js";
 const category = reactive({
   id: null,
   name: null,
+  type: null,
 });
 
 export default {
@@ -130,6 +132,7 @@ export default {
       categoryCollection: collection(firebaseFirestore, "appCategory"),
       categoryId: this.$route.params.cid,
       categoryName: null,
+      categoryType: null,
       docId: null,
     };
   },
@@ -142,10 +145,12 @@ export default {
           snapshot.forEach((doc) => {
             this.docId = doc.id;
             this.categoryName = doc.data().name;
+            this.categoryType = doc.data().type;
           });
 
           category.id = this.categoryId;
           category.name = this.categoryName;
+          category.type = this.categoryType;
         }
       );
     },
@@ -154,6 +159,7 @@ export default {
       const docRef = doc(firebaseFirestore, "appCategory/" + this.docId);
       updateDoc(docRef, "id", category.id);
       updateDoc(docRef, "name", category.name);
+      updateDoc(docRef, "type", category.type);
       this.redirectToName("AdminCategoryListPage");
     },
 

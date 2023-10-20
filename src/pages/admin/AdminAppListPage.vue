@@ -29,7 +29,9 @@
 
           <q-item-section>
             <q-item-label lines="1">{{ item.name }}</q-item-label>
-            <q-item-label caption>February 22nd, 2019</q-item-label>
+            <q-item-label caption
+              >{{ item.date }} / {{ item.categoryId }}</q-item-label
+            >
           </q-item-section>
 
           <q-item-section side>
@@ -62,11 +64,33 @@ export default {
   methods: {
     loadAppListData() {
       onSnapshot(
-        query(this.appCollection, orderBy("id", "asc")),
+        query(this.appCollection, orderBy("date", "desc")),
         (snapshot) => {
           this.appList = [];
           snapshot.forEach((doc) => {
-            this.appList.push(doc.data());
+            const convertData = doc.data();
+
+            // Convert Date
+            const getDate = new Date(convertData.date.seconds * 1000);
+            let year = getDate.getFullYear();
+            let month = "";
+            let cMonth = getDate.getMonth() + 1;
+            let day = getDate.getDate();
+            let hours = "";
+            let cHours = getDate.getHours();
+            let minutes = "";
+            let cMinutes = getDate.getMinutes();
+            if (cMonth <= 9) month = "0" + cMonth;
+            else month = cMonth;
+            if (cHours <= 9) hours = "0" + cHours;
+            else hours = cHours;
+            if (cMinutes <= 9) minutes = "0" + cMinutes;
+            else minutes = cMinutes;
+
+            convertData.date =
+              day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
+
+            this.appList.push(convertData);
           });
         }
       );

@@ -1,1 +1,9 @@
 // app global css in SCSS form
+
+.bg-image {
+  background-image: url("/src/assets/images/background.jpg");
+}
+.bg-image-filter {
+  background-color: rgb(0 180 255 / 0.6);
+  backdrop-filter: blur(10px);
+}

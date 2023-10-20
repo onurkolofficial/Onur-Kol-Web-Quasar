@@ -25,7 +25,7 @@
 
           <q-item-section>
             <q-item-label lines="1">{{ item.name }}</q-item-label>
-            <q-item-label caption>February 22nd, 2019</q-item-label>
+            <q-item-label caption>{{ item.date }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -38,26 +38,26 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useMeta } from 'quasar';
+import { ref } from "vue";
+import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from 'boot/firebase';
+import { firebaseApp, firebaseFirestore } from "boot/firebase";
 import {
   collection,
   onSnapshot,
   query,
   orderBy,
   where,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
 export default {
-  name: 'AppListPage',
+  name: "AppListPage",
 
   data() {
     // If using state method to write 'history.state.VARIABLE_NAME'
     return {
-      categoryCollection: collection(firebaseFirestore, 'appCategory'),
-      appCollection: collection(firebaseFirestore, 'appData'),
+      categoryCollection: collection(firebaseFirestore, "appCategory"),
+      appCollection: collection(firebaseFirestore, "appData"),
       categoryId: this.$route.params.cid,
       categoryName: null,
       appList: [],
@@ -67,12 +67,35 @@ export default {
   methods: {
     loadAppListData() {
       onSnapshot(
-        query(this.appCollection, orderBy('id', 'asc')),
+        query(this.appCollection, orderBy("date", "desc")),
         (snapshot) => {
           this.appList = [];
           snapshot.forEach((doc) => {
-            if (this.categoryId == doc.data().categoryId)
-              this.appList.push(doc.data());
+            if (this.categoryId == doc.data().categoryId) {
+              const convertData = doc.data();
+
+              // Convert Date
+              const getDate = new Date(convertData.date.seconds * 1000);
+              let year = getDate.getFullYear();
+              let month = "";
+              let cMonth = getDate.getMonth() + 1;
+              let day = getDate.getDate();
+              let hours = "";
+              let cHours = getDate.getHours();
+              let minutes = "";
+              let cMinutes = getDate.getMinutes();
+              if (cMonth <= 9) month = "0" + cMonth;
+              else month = cMonth;
+              if (cHours <= 9) hours = "0" + cHours;
+              else hours = cHours;
+              if (cMinutes <= 9) minutes = "0" + cMinutes;
+              else minutes = cMinutes;
+
+              convertData.date =
+                day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
+
+              this.appList.push(convertData);
+            }
           });
         }
       );
@@ -80,7 +103,7 @@ export default {
 
     getCategoryData() {
       onSnapshot(
-        query(this.categoryCollection, where('id', '==', this.categoryId)),
+        query(this.categoryCollection, where("id", "==", this.categoryId)),
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.categoryName = doc.data().name;
@@ -91,7 +114,7 @@ export default {
 
     redirectAppDetail(categoryId, appId) {
       this.$router.push({
-        path: '/apps/' + categoryId + '/' + appId,
+        path: "/apps/" + categoryId + "/" + appId,
       });
       /*
       // State, Details: AppCategoryList.vue - redirectAppList()
@@ -114,7 +137,7 @@ export default {
   setup() {
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - App List',
+        title: "Onur Kol Web Page - App List",
       };
     });
   },

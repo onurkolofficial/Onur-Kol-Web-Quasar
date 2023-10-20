@@ -129,35 +129,6 @@ const linksList = [
     icon: "double_arrow",
     isDropdown: true,
   },
-
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-    mobileOnly: true,
-  },
-  {
-    title: "Twitter",
-    caption: "@onurkolofficial",
-    icon: "link",
-    link: "https://twitter.com/onurkolofficial",
-    mobileOnly: true,
-  },
-  {
-    title: "Facebook",
-    caption: "@onurkolofficial",
-    icon: "link",
-    link: "https://facebook.com/onurkolofficial",
-    mobileOnly: true,
-  },
-  {
-    title: "Instagram",
-    caption: "@onurkolofficial",
-    icon: "link",
-    link: "https://instagram.com/onurkolofficial",
-    mobileOnly: true,
-  },
 ];
 
 // Login Button

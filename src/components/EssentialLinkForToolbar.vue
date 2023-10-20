@@ -48,7 +48,7 @@
             clickable
             v-close-popup
           >
-            <q-item-section>Twitter</q-item-section>
+            <q-item-section>X (Twitter)</q-item-section>
           </q-item>
           <q-item
             tag="a"

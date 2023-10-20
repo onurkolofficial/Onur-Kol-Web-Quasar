@@ -32,7 +32,13 @@
                 {{ appName }}
               </div>
               <div class="text-white q-my-sm text-subtitle1">
-                {{ categoryName }}/Application
+                {{ categoryName }}/{{
+                  categoryType == "app"
+                    ? "Application"
+                    : categoryType == "game"
+                    ? "Game"
+                    : categoryType
+                }}
               </div>
             </div>
           </div>
@@ -163,17 +169,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useMeta, copyToClipboard } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from "boot/firebase";
-import {
-  collection,
-  onSnapshot,
-  query,
-  orderBy,
-  where,
-} from "firebase/firestore";
+import { firebaseFirestore } from "boot/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default {
   name: "AppDetailPage",
@@ -184,6 +183,7 @@ export default {
       appCollection: collection(firebaseFirestore, "appData"),
       categoryId: this.$route.params.cid,
       categoryName: null,
+      categoryType: null,
       appId: this.$route.params.aid,
       appName: null,
       appVersion: null,
@@ -220,6 +220,7 @@ export default {
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.categoryName = doc.data().name;
+            this.categoryType = doc.data().type;
           });
         }
       );

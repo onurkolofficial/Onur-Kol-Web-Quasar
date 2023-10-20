@@ -4,33 +4,35 @@
       <q-breadcrumbs-el label="Home" icon="home" />
     </q-breadcrumbs>
   </div>
-  <q-page padding class="bg-blue">
-    <div class="text-white text-center q-pa-xl">
-      <div>
-        <div class="text-h3" style="opacity: 0.8">
-          Welcome to my official web page.
+  <q-page padding class="bg-image">
+    <div class="bg-image-filter">
+      <div class="text-white text-center q-pa-xl">
+        <div>
+          <div class="text-h3" style="opacity: 0.8">
+            Welcome to my official web page.
+          </div>
         </div>
       </div>
-    </div>
-    <div class="q-px-lg q-py-md">
-      <q-timeline color="purple">
-        <q-timeline-entry class="text-h6 text-white" heading>
-          Latest Updates
-        </q-timeline-entry>
+      <div class="q-px-lg q-py-md">
+        <q-timeline color="purple">
+          <q-timeline-entry class="text-h6 text-white" heading>
+            Latest Updates
+          </q-timeline-entry>
 
-        <q-timeline-entry
-          v-for="item in newsList"
-          :key="item.date"
-          class="text-white"
-          :title="item.title"
-          :subtitle="item.date"
-          icon="done"
-        >
-          <div>
-            {{ item.text }}
-          </div>
-        </q-timeline-entry>
-      </q-timeline>
+          <q-timeline-entry
+            v-for="item in newsList"
+            :key="item.date"
+            class="text-white"
+            :title="item.title"
+            :subtitle="item.date"
+            icon="done"
+          >
+            <div>
+              {{ item.text }}
+            </div>
+          </q-timeline-entry>
+        </q-timeline>
+      </div>
     </div>
   </q-page>
 </template>

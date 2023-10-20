@@ -66,6 +66,11 @@
                         label="Category Id"
                         name="catId"
                       />
+                      <q-input
+                        v-model="category.type"
+                        label="Category Type"
+                        name="catType"
+                      />
                     </q-form>
                   </q-card-section>
 
@@ -101,6 +106,7 @@ import checkForAdminAccount from "src/services/account/check-admin.js";
 const category = reactive({
   id: null,
   name: null,
+  type: null,
 });
 
 export default {
@@ -112,6 +118,7 @@ export default {
       setDoc(doc(firebaseFirestore, "appCategory", newDocId), {
         id: category.id,
         name: category.name,
+        type: category.type,
       }).then(() => {
         this.redirectToName("AdminCategoryListPage");
       });
