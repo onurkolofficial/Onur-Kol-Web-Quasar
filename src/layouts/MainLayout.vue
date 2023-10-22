@@ -15,7 +15,7 @@
           />
 
           <q-avatar size="32px">
-            <img src="/src/assets/images/ok_logo.png" />
+            <img src="~assets/images/ok_logo.png" />
           </q-avatar>
 
           <q-toolbar-title> </q-toolbar-title>
@@ -53,7 +53,7 @@
       <q-header elevated>
         <q-toolbar>
           <q-avatar>
-            <img src="/src/assets/images/ok_logo.png" />
+            <img src="~assets/images/ok_logo.png" />
           </q-avatar>
           <q-toolbar-title>Onur Kol Web Page</q-toolbar-title>
 

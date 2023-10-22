@@ -13,7 +13,7 @@
         <q-card flat dark style="background: none">
           <q-card-section class="q-pa-lg">
             <q-card flat dark style="background: none">
-              <q-img src="/src/assets/images/onur-kol.jpg">
+              <q-img src="~assets/images/onur-kol.jpg">
                 <div class="absolute-bottom">
                   <div class="text-h6">Onur Kol</div>
                   <q-item-label class="text-white" caption>
@@ -143,7 +143,7 @@
           <q-card-section horizontal>
             <q-card-section class="q-pa-xs" style="width: 24%">
               <q-card flat dark style="background: none">
-                <q-img src="/src/assets/images/onur-kol.jpg">
+                <q-img src="~assets/images/onur-kol.jpg">
                   <div class="absolute-bottom">
                     <div class="text-h6">Onur Kol</div>
                     <q-item-label class="text-white" caption>
