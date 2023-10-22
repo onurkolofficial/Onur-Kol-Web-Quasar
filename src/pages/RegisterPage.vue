@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <!-- 
+    <!--
       Template by Joabson Arley
       https://github.com/Joabsonlg/quasar-template
       Edit by Onur Kol
@@ -43,12 +43,7 @@
                 <div class="q-mb-xl">
                   <div class="flex justify-center">
                     <div
-                      class="
-                        text-h4 text-uppercase
-                        q-my-none
-                        text-weight-bold text-primary
-                        fredoka
-                      "
+                      class="text-h4 text-uppercase q-my-none text-weight-bold text-primary fredoka"
                     >
                       Registration Form
                     </div>
@@ -115,19 +110,18 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
-import { useQuasar, useMeta } from 'quasar';
-import { useRouter } from 'vue-router';
-import registerService from 'src/services/account/firebase-register';
+import { ref, reactive } from "vue";
+import { useQuasar, useMeta } from "quasar";
+import registerService from "src/services/account/firebase-register";
 
 export default {
-  name: 'RegisterPage',
+  name: "RegisterPage",
 
   setup() {
     const $q = useQuasar();
     useMeta(() => {
       return {
-        title: 'Onur Kol Web Page - Register',
+        title: "Onur Kol Web Page - Register",
       };
     });
 
@@ -145,7 +139,7 @@ export default {
         //const router = useRouter();
         //router.push('/');
         // For Refresh Navigation
-        window.location.href = '/';
+        window.location.href = "/";
       }
     };
     const onReset = () => {

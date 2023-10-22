@@ -23,20 +23,6 @@ const routes = [
         path: "apps/:cid/:aid",
         component: () => import("pages/AppDetailPage.vue"),
       },
-
-      /*
-      // If use to history.state
-      {
-        name: 'AppListPage',
-        path: 'apps/category',
-        component: () => import('pages/AppListPage.vue'),
-      },
-      {
-        name: 'AppDetailPage',
-        path: 'apps/app',
-        component: () => import('pages/AppDetailPage.vue'),
-      },
-      */
       {
         name: "LoginPage",
         path: "login",
@@ -46,6 +32,31 @@ const routes = [
         name: "RegisterPage",
         path: "register",
         component: () => import("pages/RegisterPage.vue"),
+      },
+      {
+        name: "JobListPage",
+        path: "jobs",
+        component: () => import("pages/JobListPage.vue"),
+      },
+      {
+        name: "JobCreatePage",
+        path: "jobs/new",
+        component: () => import("pages/JobCreatePage.vue"),
+      },
+      {
+        name: "DonatePage",
+        path: "donate",
+        component: () => import("pages/DonatePage.vue"),
+      },
+      {
+        name: "AboutPage",
+        path: "about",
+        component: () => import("pages/AboutPage.vue"),
+      },
+      {
+        name: "ContactPage",
+        path: "contact",
+        component: () => import("pages/ContactPage.vue"),
       },
     ],
   },

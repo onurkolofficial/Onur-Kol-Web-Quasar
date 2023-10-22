@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Admin" icon="home" to="/admin" />
       <q-breadcrumbs-el label="Apps" icon="double_arrow" />
     </q-breadcrumbs>
@@ -21,6 +21,14 @@
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
+      <q-circular-progress
+        v-if="!isLoadedList"
+        indeterminate
+        rounded
+        size="50px"
+        color="primary"
+        class="q-ma-md center"
+      />
       <div v-for="item in appList" :key="item.id">
         <q-item clickable v-ripple @click="redirectToEdit(item.id)">
           <q-item-section avatar top>
@@ -58,6 +66,7 @@ export default {
     return {
       appCollection: collection(firebaseFirestore, "appData"),
       appList: [],
+      isLoadedList: false,
     };
   },
 
@@ -91,6 +100,7 @@ export default {
               day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
 
             this.appList.push(convertData);
+            this.isLoadedList = true;
           });
         }
       );

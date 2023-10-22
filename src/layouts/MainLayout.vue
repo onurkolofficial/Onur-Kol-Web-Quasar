@@ -14,7 +14,11 @@
             @click="toggleLeftDrawer"
           />
 
-          <q-toolbar-title>Onur Kol Web Page</q-toolbar-title>
+          <q-avatar size="32px">
+            <img src="/src/assets/images/ok_logo.png" />
+          </q-avatar>
+
+          <q-toolbar-title> </q-toolbar-title>
 
           <div>{{ userDisplayInfo }}</div>
         </q-toolbar>
@@ -48,6 +52,9 @@
     <div class="gt-xs">
       <q-header elevated>
         <q-toolbar>
+          <q-avatar>
+            <img src="/src/assets/images/ok_logo.png" />
+          </q-avatar>
           <q-toolbar-title>Onur Kol Web Page</q-toolbar-title>
 
           <div>{{ userDisplayInfo }}</div>
@@ -94,12 +101,12 @@
 </template>
 
 <script>
-import { onBeforeUnmount, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { useQuasar, LocalStorage } from "quasar";
 import EssentialLinkForDrawer from "components/EssentialLinkForDrawer.vue";
 import EssentialLinkForToolbar from "components/EssentialLinkForToolbar.vue";
 
-import { firebaseApp, firebaseFirestore } from "boot/firebase";
+import { firebaseFirestore } from "boot/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 import logoutService from "src/services/account/firebase-logout";

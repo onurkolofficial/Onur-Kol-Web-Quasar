@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Home" icon="home" to="/" />
       <q-breadcrumbs-el label="Apps" icon="double_arrow" />
     </q-breadcrumbs>
@@ -12,6 +12,14 @@
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
+      <q-circular-progress
+        v-if="!isLoadedList"
+        indeterminate
+        rounded
+        size="50px"
+        color="primary"
+        class="q-ma-md center"
+      />
       <div v-for="item in categoryList" :key="item.id">
         <q-item clickable v-ripple @click="redirectAppList(item.id)">
           <q-item-section avatar top>
@@ -39,13 +47,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-
-let categoryId = ref(null);
 
 export default {
   name: "AppCategoryPage",
@@ -54,6 +59,7 @@ export default {
     return {
       categoryCollection: collection(firebaseFirestore, "appCategory"),
       categoryList: [],
+      isLoadedList: false,
     };
   },
 
@@ -65,6 +71,7 @@ export default {
           this.categoryList = [];
           snapshot.forEach((doc) => {
             this.categoryList.push(doc.data());
+            this.isLoadedList = true;
           });
         }
       );
@@ -74,15 +81,6 @@ export default {
       this.$router.push({
         path: "/apps/" + id,
       });
-      /*
-      // Alternative: Using history state.
-      // For Details: 'AppListPage.vue' - data()
-      // and check routes.js
-      this.$router.push({
-        name: 'AppListPage',
-        state: { categoryId: id, categoryName: name },
-      });
-      */
     },
   },
 

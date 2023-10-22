@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Home" icon="home" />
     </q-breadcrumbs>
   </div>
@@ -12,12 +12,30 @@
             Welcome to my official web page.
           </div>
         </div>
+        <div class="q-pt-xl">
+          <q-btn
+            color="white"
+            text-color="primary"
+            label="About Me"
+            style="width: 150px"
+            to="/about"
+          />
+        </div>
       </div>
       <div class="q-px-lg q-py-md">
         <q-timeline color="purple">
           <q-timeline-entry class="text-h6 text-white" heading>
             Latest Updates
           </q-timeline-entry>
+
+          <q-circular-progress
+            v-if="!isLoadedList"
+            indeterminate
+            rounded
+            size="50px"
+            color="white"
+            class="q-ma-md center"
+          />
 
           <q-timeline-entry
             v-for="item in newsList"
@@ -56,6 +74,7 @@ export default {
     return {
       newsCollection: collection(firebaseFirestore, "news"),
       newsList: [],
+      isLoadedList: false,
     };
   },
 
@@ -89,6 +108,7 @@ export default {
               day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
 
             this.newsList.push(convertData);
+            this.isLoadedList = true;
           });
         }
       );

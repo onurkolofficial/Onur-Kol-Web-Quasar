@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Home" icon="home" to="/" />
       <q-breadcrumbs-el label="Apps" icon="double_arrow" to="/apps" />
       <q-breadcrumbs-el

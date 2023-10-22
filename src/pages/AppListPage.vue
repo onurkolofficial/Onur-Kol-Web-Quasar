@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Home" icon="home" to="/" />
       <q-breadcrumbs-el label="Apps" icon="double_arrow" to="/apps" />
       <q-breadcrumbs-el label="Category" icon="double_arrow" />
@@ -13,6 +13,14 @@
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
+      <q-circular-progress
+        v-if="!isLoadedList"
+        indeterminate
+        rounded
+        size="50px"
+        color="primary"
+        class="q-ma-md center"
+      />
       <div v-for="item in appList" :key="item.id">
         <q-item
           clickable
@@ -38,10 +46,9 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useMeta } from "quasar";
 
-import { firebaseApp, firebaseFirestore } from "boot/firebase";
+import { firebaseFirestore } from "boot/firebase";
 import {
   collection,
   onSnapshot,
@@ -54,13 +61,13 @@ export default {
   name: "AppListPage",
 
   data() {
-    // If using state method to write 'history.state.VARIABLE_NAME'
     return {
       categoryCollection: collection(firebaseFirestore, "appCategory"),
       appCollection: collection(firebaseFirestore, "appData"),
       categoryId: this.$route.params.cid,
       categoryName: null,
       appList: [],
+      isLoadedList: false,
     };
   },
 
@@ -95,6 +102,7 @@ export default {
                 day + "/" + month + "/" + year + ", " + hours + ":" + minutes;
 
               this.appList.push(convertData);
+              this.isLoadedList = true;
             }
           });
         }
@@ -116,21 +124,6 @@ export default {
       this.$router.push({
         path: "/apps/" + categoryId + "/" + appId,
       });
-      /*
-      // State, Details: AppCategoryList.vue - redirectAppList()
-      this.$router.push({
-        name: 'AppDetailPage',
-        state: {
-          categoryId: categoryId,
-          categoryName: categoryName,
-          appId: id,
-          appName: name,
-          appVersion: version,
-          appDownload: downloadUrl,
-          appSource: sourceUrl,
-        },
-      });
-      */
     },
   },
 

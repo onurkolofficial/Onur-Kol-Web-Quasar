@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-breadcrumbs>
+    <q-breadcrumbs active-color="accent">
       <q-breadcrumbs-el label="Admin" icon="home" to="/admin" />
       <q-breadcrumbs-el label="Category" icon="double_arrow" />
     </q-breadcrumbs>
@@ -21,6 +21,14 @@
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
+      <q-circular-progress
+        v-if="!isLoadedList"
+        indeterminate
+        rounded
+        size="50px"
+        color="primary"
+        class="q-ma-md center"
+      />
       <div v-for="item in categoryList" :key="item.id">
         <q-item clickable v-ripple @click="redirectToEdit(item.id)">
           <q-item-section avatar top>
@@ -62,6 +70,7 @@ export default {
     return {
       categoryCollection: collection(firebaseFirestore, "appCategory"),
       categoryList: [],
+      isLoadedList: false,
     };
   },
 
@@ -73,6 +82,7 @@ export default {
           this.categoryList = [];
           snapshot.forEach((doc) => {
             this.categoryList.push(doc.data());
+            this.isLoadedList = true;
           });
         }
       );
