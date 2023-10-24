@@ -1,4 +1,6 @@
 <template>
+  <!-- Desktop: hhh lpr fff-->
+  <!-- Mobile: lHh Lpr lFf-->
   <q-layout view="lHh Lpr lFf">
     <!-- For Mobile -->
     <div class="lt-sm">
@@ -55,7 +57,7 @@
           <q-avatar>
             <img src="~assets/images/ok_logo.png" />
           </q-avatar>
-          <q-toolbar-title>Onur Kol Web Page</q-toolbar-title>
+          <q-toolbar-title>{{ $t("main.webTitle") }}</q-toolbar-title>
 
           <div>{{ userDisplayInfo }}</div>
         </q-toolbar>

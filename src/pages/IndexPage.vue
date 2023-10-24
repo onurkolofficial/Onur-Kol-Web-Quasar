@@ -4,6 +4,9 @@
       <q-breadcrumbs-el label="Home" icon="home" />
     </q-breadcrumbs>
   </div>
+  <div>
+    <LangSelectorTemplate />
+  </div>
   <q-page padding class="bg-image">
     <div class="bg-image-filter">
       <div class="text-white text-center q-pa-xl">
@@ -16,7 +19,7 @@
           <q-btn
             color="white"
             text-color="primary"
-            label="About Me"
+            :label="$t('home.aboutMeText')"
             style="width: 150px"
             to="/about"
           />
@@ -67,8 +70,14 @@ import {
   limit,
 } from "firebase/firestore";
 
+import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
+
 export default {
   name: "IndexPage",
+
+  components: {
+    LangSelectorTemplate,
+  },
 
   data() {
     return {

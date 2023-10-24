@@ -4,6 +4,9 @@
       <q-breadcrumbs-el label="Home" icon="home" to="/" />
       <q-breadcrumbs-el label="About" icon="double_arrow" />
     </q-breadcrumbs>
+    <div>
+      <LangSelectorTemplate />
+    </div>
   </div>
   <q-page padding class="bg-image">
     <div class="bg-image-filter">
@@ -276,8 +279,14 @@
 <script>
 import { useMeta } from "quasar";
 
+import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
+
 export default {
   name: "AboutPage",
+
+  components: {
+    LangSelectorTemplate,
+  },
 
   data() {
     return {
