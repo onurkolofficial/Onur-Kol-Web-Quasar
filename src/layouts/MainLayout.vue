@@ -42,8 +42,10 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>Logout</q-item-label>
-                <q-item-label caption>Logout App!</q-item-label>
+                <q-item-label>{{ $t("navigation.logout") }}</q-item-label>
+                <q-item-label caption>{{
+                  $t("navigation.logoutCaption")
+                }}</q-item-label>
               </q-item-section>
             </q-item>
           </div>
@@ -84,10 +86,10 @@
                   @click="logout"
                 >
                   <q-avatar size="lg" icon="logout" />
-                  Logout
-                  <q-tooltip anchor="bottom middle" self="top middle"
-                    >Logout App!</q-tooltip
-                  >
+                  {{ $t("navigation.logout") }}
+                  <q-tooltip anchor="bottom middle" self="top middle">{{
+                    $t("navigation.logoutCaption")
+                  }}</q-tooltip>
                 </q-chip>
               </div>
             </div>
@@ -117,69 +119,6 @@ const leftDrawerOpen = ref(false);
 const isUserSignedIn = LocalStorage.has("user");
 const userInfo = LocalStorage.getItem("user");
 
-const linksList = [
-  {
-    title: "Home",
-    caption: "page.home",
-    icon: "home",
-    link: "/",
-    isRouter: true,
-  },
-  {
-    title: "Apps",
-    caption: "page.apps",
-    icon: "double_arrow",
-    link: "/apps",
-    isRouter: true,
-  },
-  {
-    title: "Social",
-    caption: "list.social",
-    icon: "double_arrow",
-    isDropdown: true,
-  },
-];
-
-// Login Button
-if (!LocalStorage.has("user")) {
-  linksList[linksList.length] = {
-    title: "Login",
-    caption: "Login your account.",
-    icon: "login",
-    link: "/login",
-    isRouter: true,
-  };
-}
-
-// Admin Button
-if (LocalStorage.has("user")) {
-  const userMail = userInfo.email;
-  // Get Firestore Collection
-  const usersCollection = collection(firebaseFirestore, "webAdmin");
-  getDocs(usersCollection)
-    .then((querySnapshot) => {
-      for (var i in querySnapshot.docs) {
-        const doc = querySnapshot.docs[i];
-
-        const adminMails = doc.data().email;
-        if (adminMails == userMail) {
-          linksList[linksList.length] = {
-            title: "Admin",
-            caption: "Admin Panel",
-            icon: "admin_panel_settings",
-            link: "/admin",
-            isRouter: false,
-          };
-          break;
-        }
-      }
-    })
-    .catch((error) => {
-      // Handle database error
-      console.log(error.message);
-    });
-}
-
 const showLoadingScreen = () => {
   // Show Loading
   const $q = useQuasar();
@@ -204,6 +143,75 @@ export default defineComponent({
       return userInfo == null ? "User" : userInfo.displayName;
     },
   },
+  data() {
+    return { essentialLinks: [] };
+  },
+  methods: {
+    initNavigationMenu() {
+      this.essentialLinks = [
+        {
+          title: this.$t("navigation.home"),
+          caption: this.$t("navigation.homeCaption"),
+          icon: "home",
+          link: "/",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigation.apps"),
+          caption: this.$t("navigation.appsCaption"),
+          icon: "double_arrow",
+          link: "/apps",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigation.social"),
+          caption: this.$t("navigation.socialCaption"),
+          icon: "double_arrow",
+          isDropdown: true,
+        },
+      ];
+      // Login Button
+      if (!LocalStorage.has("user")) {
+        this.essentialLinks[this.essentialLinks.length] = {
+          title: this.$t("navigation.login"),
+          caption: this.$t("navigation.loginCaption"),
+          icon: "login",
+          link: "/login",
+          isRouter: true,
+        };
+      }
+
+      // Admin Button
+      if (LocalStorage.has("user")) {
+        const userMail = userInfo.email;
+        // Get Firestore Collection
+        const usersCollection = collection(firebaseFirestore, "webAdmin");
+        getDocs(usersCollection)
+          .then((querySnapshot) => {
+            for (var i in querySnapshot.docs) {
+              const doc = querySnapshot.docs[i];
+
+              const adminMails = doc.data().email;
+              if (adminMails == userMail) {
+                this.essentialLinks[this.essentialLinks.length] = {
+                  title: this.$t("navigation.admin"),
+                  caption: this.$t("navigation.adminCaption"),
+                  icon: "admin_panel_settings",
+                  link: "/admin",
+                  isRouter: false,
+                };
+                break;
+              }
+            }
+          })
+          .catch((error) => {
+            // Handle database error
+            console.log(error.message);
+          });
+      }
+    },
+  },
+
   setup() {
     const logout = () => {
       logoutService().then(() => {
@@ -213,7 +221,6 @@ export default defineComponent({
     };
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       userInfo,
       isUserSignedIn,
@@ -240,6 +247,7 @@ export default defineComponent({
   },
   beforeMount() {
     showLoadingScreen();
+    this.initNavigationMenu();
   },
 });
 </script>

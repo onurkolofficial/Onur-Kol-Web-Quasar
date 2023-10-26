@@ -1,12 +1,12 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs active-color="accent">
-      <q-breadcrumbs-el label="Home" icon="home" to="/" />
-      <q-breadcrumbs-el label="About" icon="double_arrow" />
+      <q-breadcrumbs-el :label="$t('navigation.home')" icon="home" to="/" />
+      <q-breadcrumbs-el :label="$t('navigation.about')" icon="double_arrow" />
     </q-breadcrumbs>
-    <div>
-      <LangSelectorTemplate />
-    </div>
+  </div>
+  <div>
+    <LangSelectorTemplate />
   </div>
   <q-page padding class="bg-image">
     <div class="bg-image-filter">
@@ -26,7 +26,7 @@
               </q-img>
 
               <q-card-section>
-                <q-expansion-item icon="stars" label="Skills">
+                <q-expansion-item icon="stars" :label="$t('about.skillsText')">
                   <q-card style="background: none">
                     <q-card-section>
                       <q-list>
@@ -112,7 +112,9 @@
 
                         <q-item>
                           <q-item-section>
-                            <q-item-label>Graphic Design</q-item-label>
+                            <q-item-label>{{
+                              $t("about.graphicDesignText")
+                            }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
                             <q-rating
@@ -133,7 +135,9 @@
             </q-card>
           </q-card-section>
           <q-card-section>
-            <div class="text-h3" style="opacity: 0.8">Biography</div>
+            <div class="text-h3" style="opacity: 0.8">
+              {{ $t("about.biographyText") }}
+            </div>
           </q-card-section>
           <q-card-section>
             <div v-html="biographyText" />
@@ -155,7 +159,10 @@
                   </div>
                 </q-img>
                 <q-card-section style="padding: 0">
-                  <q-expansion-item icon="stars" label="Skills">
+                  <q-expansion-item
+                    icon="stars"
+                    :label="$t('about.skillsText')"
+                  >
                     <q-card style="background: none">
                       <q-card-section>
                         <q-list>
@@ -241,7 +248,9 @@
 
                           <q-item>
                             <q-item-section>
-                              <q-item-label>Graphic Design</q-item-label>
+                              <q-item-label>{{
+                                $t("about.graphicDesignText")
+                              }}</q-item-label>
                             </q-item-section>
                             <q-item-section side>
                               <q-rating
@@ -263,7 +272,9 @@
             </q-card-section>
             <q-card-section vertical>
               <q-card-section>
-                <div class="text-h3" style="opacity: 0.8">Biography</div>
+                <div class="text-h3" style="opacity: 0.8">
+                  {{ $t("about.biographyText") }}
+                </div>
               </q-card-section>
               <q-card-section>
                 <div v-html="biographyText" />
@@ -277,6 +288,7 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useMeta } from "quasar";
 
 import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
@@ -290,16 +302,7 @@ export default {
 
   data() {
     return {
-      biographyText:
-        "Hi everyone.<br> My name is Onur Kol. I'm from and live in Turkey. I was born in Istanbul on January 23, 1999.<br>" +
-        "My education (university) is not about computers/software. That's why I practice to improve myself.<br>" +
-        "I work in Android development and web development. <br>" +
-        "I started Android application development in 2019. I use Java language in Android development.<br>" +
-        "I first started web programming with Javascript and continued with PHP. Currently learning Vue.js.<br>" +
-        "I am actively selling apps and have apps available in the store (for Android).<br>" +
-        "In addition, I continue my graphic design with Figma.<br>" +
-        "I used Windows and Linux operating systems. (I'm currently using Windows)<br>" +
-        "I plan to do business through this website in the future. <br>Thank you for reading.",
+      biographyText: this.$t("about.biographyContentText"),
       skillAndroid: 4,
       skillPhp: 3,
       skillHTMLCSS: 4,
@@ -310,9 +313,11 @@ export default {
   },
 
   setup() {
+    const { t } = useI18n({ useScope: "global" });
+
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page - About",
+        title: t("main.webTitle") + " - " + t("navigation.about"),
       };
     });
   },

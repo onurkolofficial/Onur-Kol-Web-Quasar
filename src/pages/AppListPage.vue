@@ -1,15 +1,31 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs active-color="accent">
-      <q-breadcrumbs-el label="Home" icon="home" to="/" />
-      <q-breadcrumbs-el label="Apps" icon="double_arrow" to="/apps" />
-      <q-breadcrumbs-el label="Category" icon="double_arrow" />
+      <q-breadcrumbs-el :label="$t('navigation.home')" icon="home" to="/" />
+      <q-breadcrumbs-el
+        :label="$t('navigation.apps')"
+        icon="double_arrow"
+        to="/apps"
+      />
+      <q-breadcrumbs-el :label="categoryName" icon="double_arrow" />
     </q-breadcrumbs>
+  </div>
+  <div>
+    <LangSelectorTemplate />
   </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Applications / {{ categoryName }}</q-toolbar-title>
+      <q-toolbar-title
+        >{{
+          categoryType == "app"
+            ? $t("apps.applicationText")
+            : categoryType == "game"
+            ? $t("apps.gameText")
+            : categoryType
+        }}
+        / {{ categoryName }}</q-toolbar-title
+      >
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
@@ -46,6 +62,7 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
@@ -57,8 +74,14 @@ import {
   where,
 } from "firebase/firestore";
 
+import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
+
 export default {
   name: "AppListPage",
+
+  components: {
+    LangSelectorTemplate,
+  },
 
   data() {
     return {
@@ -66,6 +89,7 @@ export default {
       appCollection: collection(firebaseFirestore, "appData"),
       categoryId: this.$route.params.cid,
       categoryName: null,
+      categoryType: null,
       appList: [],
       isLoadedList: false,
     };
@@ -115,6 +139,7 @@ export default {
         (snapshot) => {
           snapshot.forEach((doc) => {
             this.categoryName = doc.data().name;
+            this.categoryType = doc.data().type;
           });
         }
       );
@@ -128,9 +153,11 @@ export default {
   },
 
   setup() {
+    const { t } = useI18n({ useScope: "global" });
+
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page - App List",
+        title: t("main.webTitle") + " - " + t("navigation.appsCaption"),
       };
     });
   },

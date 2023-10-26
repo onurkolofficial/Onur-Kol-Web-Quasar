@@ -78,44 +78,6 @@ import EssentialLinkForToolbar from "components/EssentialLinkForToolbar.vue";
 const leftDrawerOpen = ref(false);
 const userInfo = LocalStorage.getItem("user");
 
-const linksList = [
-  {
-    title: "Home Admin",
-    caption: "page.admin.home",
-    icon: "home",
-    link: "/admin",
-    isRouter: true,
-  },
-  {
-    title: "Home",
-    caption: "page.home",
-    icon: "double_arrow",
-    link: "/",
-    isRouter: true,
-  },
-  {
-    title: "Category",
-    caption: "page.category",
-    icon: "code",
-    link: "/admin/category",
-    isRouter: true,
-  },
-  {
-    title: "Apps",
-    caption: "page.apps",
-    icon: "code",
-    link: "/admin/apps",
-    isRouter: true,
-  },
-  {
-    title: "News",
-    caption: "page.news",
-    icon: "list",
-    link: "/admin/news",
-    isRouter: true,
-  },
-];
-
 const showLoadingScreen = () => {
   // Show Loading
   const $q = useQuasar();
@@ -140,9 +102,52 @@ export default defineComponent({
       return userInfo == null ? "User" : userInfo.displayName;
     },
   },
+  data() {
+    return { essentialLinks: [] };
+  },
+  methods: {
+    initNavigationMenu() {
+      this.essentialLinks = [
+        {
+          title: this.$t("navigationAdmin.homeAdmin"),
+          caption: this.$t("navigationAdmin.homeAdminCaption"),
+          icon: "home",
+          link: "/admin",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigationAdmin.home"),
+          caption: this.$t("navigationAdmin.homeCaption"),
+          icon: "double_arrow",
+          link: "/",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigationAdmin.category"),
+          caption: this.$t("navigationAdmin.categoryCaption"),
+          icon: "list",
+          link: "/admin/category",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigationAdmin.apps"),
+          caption: this.$t("navigationAdmin.appsCaption"),
+          icon: "list",
+          link: "/admin/apps",
+          isRouter: true,
+        },
+        {
+          title: this.$t("navigationAdmin.news"),
+          caption: this.$t("navigationAdmin.newsCaption"),
+          icon: "list",
+          link: "/admin/news",
+          isRouter: true,
+        },
+      ];
+    },
+  },
   setup() {
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       userInfo,
       toggleLeftDrawer() {
@@ -167,6 +172,7 @@ export default defineComponent({
   },
   beforeMount() {
     showLoadingScreen();
+    this.initNavigationMenu();
   },
 });
 </script>

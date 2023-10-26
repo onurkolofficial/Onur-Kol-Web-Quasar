@@ -70,6 +70,9 @@
           </q-item>
         </q-list>
       </q-menu>
+      <q-tooltip anchor="bottom middle" self="top middle">{{
+        caption
+      }}</q-tooltip>
     </q-chip>
   </div>
   <div v-else-if="mobileOnly === true"></div>

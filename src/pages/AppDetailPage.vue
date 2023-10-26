@@ -1,10 +1,14 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs active-color="accent">
-      <q-breadcrumbs-el label="Home" icon="home" to="/" />
-      <q-breadcrumbs-el label="Apps" icon="double_arrow" to="/apps" />
+      <q-breadcrumbs-el :label="$t('navigation.home')" icon="home" to="/" />
       <q-breadcrumbs-el
-        label="Category"
+        :label="$t('navigation.apps')"
+        icon="double_arrow"
+        to="/apps"
+      />
+      <q-breadcrumbs-el
+        :label="categoryName"
         icon="double_arrow"
         to="/"
         @click="redirectOnHistoryClick"
@@ -12,10 +16,13 @@
       <q-breadcrumbs-el label="Detail" icon="double_arrow" />
     </q-breadcrumbs>
   </div>
+  <div>
+    <LangSelectorTemplate />
+  </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Application Detail</q-toolbar-title>
+      <q-toolbar-title>{{ $t("apps.appDetailText") }}</q-toolbar-title>
     </q-toolbar>
 
     <q-card v-if="appName != null" class="q-ma-xl">
@@ -34,9 +41,9 @@
               <div class="text-white q-my-sm text-subtitle1">
                 {{ categoryName }}/{{
                   categoryType == "app"
-                    ? "Application"
+                    ? $t("apps.applicationText")
                     : categoryType == "game"
-                    ? "Game"
+                    ? $t("apps.gameText")
                     : categoryType
                 }}
               </div>
@@ -57,7 +64,9 @@
                   <q-card-section>
                     <div class="row items-center no-wrap">
                       <div class="col">
-                        <div class="text-h6 text-primary">Version</div>
+                        <div class="text-h6 text-primary">
+                          {{ $t("apps.versionText") }}
+                        </div>
                         <div class="text-subtitle2 text-primary">
                           {{ appVersion }}
                         </div>
@@ -75,25 +84,27 @@
                                 clickable
                                 @click="copyLink('this')"
                               >
-                                <q-item-section>Copy Page Link</q-item-section>
+                                <q-item-section>{{
+                                  $t("apps.copyPageLinkText")
+                                }}</q-item-section>
                               </q-item>
                               <q-item
                                 v-if="isDownloadable"
                                 clickable
                                 @click="copyLink(appDownload)"
                               >
-                                <q-item-section
-                                  >Copy Download Link</q-item-section
-                                >
+                                <q-item-section>{{
+                                  $t("apps.copyDownloadText")
+                                }}</q-item-section>
                               </q-item>
                               <q-item
                                 v-if="isSourceable"
                                 clickable
                                 @click="copyLink(appSource)"
                               >
-                                <q-item-section
-                                  >Copy Source Link</q-item-section
-                                >
+                                <q-item-section>{{
+                                  $t("apps.copySourceLinkText")
+                                }}</q-item-section>
                               </q-item>
                             </q-list>
                           </q-menu>
@@ -112,13 +123,13 @@
                       @click="redirectLink(appDownload)"
                       flat
                       color="primary"
-                      >Download App</q-btn
+                      >{{ $t("apps.downloadAppText") }}</q-btn
                     >
                     <q-btn
                       v-if="isSourceable"
                       @click="redirectLink(appSource)"
                       flat
-                      >Source Code</q-btn
+                      >{{ $t("apps.sourceCodeText") }}</q-btn
                     >
                   </q-card-actions>
                 </q-card>
@@ -169,13 +180,20 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useMeta, copyToClipboard } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
+import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
+
 export default {
   name: "AppDetailPage",
+
+  components: {
+    LangSelectorTemplate,
+  },
 
   data() {
     return {
@@ -243,9 +261,11 @@ export default {
   },
 
   setup() {
+    const { t } = useI18n({ useScope: "global" });
+
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page - App Detail",
+        title: t("main.webTitle") + " - " + t("apps.appDetailText"),
       };
     });
   },

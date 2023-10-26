@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs active-color="accent">
-      <q-breadcrumbs-el label="Home" icon="home" />
+      <q-breadcrumbs-el :label="$t('navigation.home')" icon="home" />
     </q-breadcrumbs>
   </div>
   <div>
@@ -12,7 +12,7 @@
       <div class="text-white text-center q-pa-xl">
         <div>
           <div class="text-h3" style="opacity: 0.8">
-            Welcome to my official web page.
+            {{ $t("home.welcomeText") }}
           </div>
         </div>
         <div class="q-pt-xl">
@@ -28,7 +28,7 @@
       <div class="q-px-lg q-py-md">
         <q-timeline color="purple">
           <q-timeline-entry class="text-h6 text-white" heading>
-            Latest Updates
+            {{ $t("home.lastUpdatesText") }}
           </q-timeline-entry>
 
           <q-circular-progress
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
@@ -125,9 +126,11 @@ export default {
   },
 
   setup() {
+    const { t } = useI18n({ useScope: "global" });
+
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page",
+        title: t("main.webTitle"),
       };
     });
   },

@@ -1,14 +1,17 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
     <q-breadcrumbs active-color="accent">
-      <q-breadcrumbs-el label="Home" icon="home" to="/" />
-      <q-breadcrumbs-el label="Apps" icon="double_arrow" />
+      <q-breadcrumbs-el :label="$t('navigation.home')" icon="home" to="/" />
+      <q-breadcrumbs-el :label="$t('navigation.apps')" icon="double_arrow" />
     </q-breadcrumbs>
+  </div>
+  <div>
+    <LangSelectorTemplate />
   </div>
   <q-page padding>
     <!-- content -->
     <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Application Category</q-toolbar-title>
+      <q-toolbar-title>{{ $t("apps.appCategoryText") }}</q-toolbar-title>
     </q-toolbar>
 
     <q-list bordered padding class="rounded-borders">
@@ -30,9 +33,9 @@
             <q-item-label lines="1">{{ item.name }}</q-item-label>
             <q-item-label caption>{{
               item.type == "app"
-                ? "Application"
+                ? $t("apps.applicationText")
                 : item.type == "game"
-                ? "Game"
+                ? $t("apps.gameText")
                 : item.type
             }}</q-item-label>
           </q-item-section>
@@ -47,13 +50,20 @@
 </template>
 
 <script>
+import { useI18n } from "vue-i18n";
 import { useMeta } from "quasar";
 
 import { firebaseFirestore } from "boot/firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
+import LangSelectorTemplate from "components/LangSelectorTemplate.vue";
+
 export default {
   name: "AppCategoryPage",
+
+  components: {
+    LangSelectorTemplate,
+  },
 
   data() {
     return {
@@ -85,9 +95,11 @@ export default {
   },
 
   setup() {
+    const { t } = useI18n({ useScope: "global" });
+
     useMeta(() => {
       return {
-        title: "Onur Kol Web Page - Category",
+        title: t("main.webTitle") + " - " + t("navigation.apps"),
       };
     });
   },
